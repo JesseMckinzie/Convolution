@@ -1,6 +1,6 @@
 # Convolution
 The image is: <br />
-![image](checker.jpg?raw=true "checkers")
+![image](img/checker.jpg?raw=true "checkers")
 
 The kernel is: <br />
 [[-1. -1. -1. -1. -1.  1.  1.  1.  1.  1.] <br />
@@ -16,8 +16,8 @@ The kernel is: <br />
  
  The results from scipy
  
- ![scipy](scipy.png?raw=true "scipy")
+ ![scipy](img/scipy.png?raw=true "scipy")
 
 The results from the C++ algorithm:
 
-![result](result.png?raw=true "reult")
+![result](img/result.png?raw=true "reult")
