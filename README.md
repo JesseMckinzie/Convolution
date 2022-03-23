@@ -1,6 +1,6 @@
 # Convolution
 The image is: <br />
-![image](checkers.jpg?raw=true "checkers")
+![image](checker.jpg?raw=true "checkers")
 
 The kernel is: <br />
 [[-1. -1. -1. -1. -1.  1.  1.  1.  1.  1.] <br />
