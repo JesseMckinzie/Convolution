@@ -13,7 +13,7 @@ __global__ void convolve2d_helper(float* image, int row_size, int col_size, floa
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-    if(row*col >= row_size*col_size) return;
+    if(row * col_size + col >= row_size*col_size) return;
 
     int start_r = row - kernel_offset;
     int start_c = col - kernel_offset;
@@ -23,20 +23,21 @@ __global__ void convolve2d_helper(float* image, int row_size, int col_size, floa
     int iFlip, jFlip;
     int ii, jj;
     for(int i = 0; i < kernel_size; ++i){
-        iFlip = kernel_size - 1 - i;
+        //iFlip = kernel_size - 1 - i;
         for(int j = 0; j < kernel_size; ++j){
-            jFlip = kernel_size - 1 - j;
+            //jFlip = kernel_size - 1 - j;
 
-            ii = row + (kernel_offset - iFlip);
-            jj = col + (kernel_offset - jFlip);
+            //ii = row + (kernel_offset - iFlip);
+            //jj = col + (kernel_offset - jFlip);
 
-            //if((start_r + i) >= 0 && (start_r + i) < n && (start_c + j) >= 0 && (start_c + j) < n){
-            if(ii >= 0 && ii < row_size && jj >= 0 && jj < col_size) {
-                temp += image[ii * col_size + j] * kernel[i * kernel_size + j];
+            if((start_r + i) >= 0 && (start_r + i) < row_size && (start_c + j) >= 0 && (start_c + j) < col_size){
+            //if(ii >= 0 && ii < row_size && jj >= 0 && jj < col_size) {
+                //temp += image[ii * col_size + jj] * kernel[i * kernel_size + j];
+                temp += image[(start_r + i) * col_size + (start_c + j)] * kernel[i*kernel_size + j];
             }
         }
     }
-    printf("temp: %d \n", row*col_size + col);
+    //printf("temp: %d \n", row*col_size + col);
     result[row * col_size + col] = temp;
 }
 
@@ -79,7 +80,7 @@ vector<vector<float>> convolve2d(vector<vector<float>>& image, vector<vector<flo
    
     for(int i = 0; i < kernel.size(); ++i){
         for(int j = 0; j < kernel.size(); ++j){\
-            linear_kernel[i*kernel.size() + j] = kernel[i][j];
+            linear_kernel[i*kernel.size() + j] = kernel[kernel.size() - 1 - i][kernel.size() - 1 - j];
         }
     }
 
@@ -95,7 +96,7 @@ vector<vector<float>> convolve2d(vector<vector<float>>& image, vector<vector<flo
     cudaMemcpy(d_kernel, linear_kernel, kernel.size()*kernel.size()*sizeof(float), cudaMemcpyHostToDevice);
 
     int THREADS = 16;
-    int BLOCKS = (size + THREADS - 1) / THREADS;
+    int BLOCKS = (row_size + THREADS - 1) / THREADS;
 
     dim3 block_dim(THREADS, THREADS);
     dim3 grid_dim(BLOCKS, BLOCKS);
