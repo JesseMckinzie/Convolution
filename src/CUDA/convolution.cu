@@ -8,25 +8,36 @@ using namespace std;
 
 typedef vector<vector<float>> Matrix;
 
-__global__ void convolve2d_helper(float* image, int n, float* kernel, int kernel_size, int kernel_offset, float* result){
+__global__ void convolve2d_helper(float* image, int row_size, int col_size, float* kernel, int kernel_size, int kernel_offset, float* result){
 
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
+    if(row*col >= row_size*col_size) return;
+
     int start_r = row - kernel_offset;
     int start_c = col - kernel_offset;
 
-    int temp = 0;
+    float temp = 0;
 
+    int iFlip, jFlip;
+    int ii, jj;
     for(int i = 0; i < kernel_size; ++i){
-        for(int j = 0; j < kernel_offset; ++j){
-            if((start_r + i) >= 0 && (start_r + i) < n && (start_c + j) >= 0 && (start_c + j) < n){
-                temp += image[(start_r + i) * n + (start_c + j)] * kernel[i * kernel_size + j];
+        iFlip = kernel_size - 1 - i;
+        for(int j = 0; j < kernel_size; ++j){
+            jFlip = kernel_size - 1 - j;
+
+            ii = row + (kernel_offset - iFlip);
+            jj = col + (kernel_offset - jFlip);
+
+            //if((start_r + i) >= 0 && (start_r + i) < n && (start_c + j) >= 0 && (start_c + j) < n){
+            if(ii >= 0 && ii < row_size && jj >= 0 && jj < col_size) {
+                temp += image[ii * col_size + j] * kernel[i * kernel_size + j];
             }
         }
     }
-
-    result[row * n + col] = temp;
+    printf("temp: %d \n", row*col_size + col);
+    result[row * col_size + col] = temp;
 }
 
 
@@ -93,7 +104,10 @@ vector<vector<float>> convolve2d(vector<vector<float>>& image, vector<vector<flo
     cout << "size: " << size << endl;
     cout << "kernel size: " << kernel.size() << endl;
     cout << "offset: " << offset << endl;
-    convolve2d_helper<<<grid_dim, block_dim>>>(d_image, size, d_kernel, kernel.size(), offset, d_result);
+    cout << "blocks: " << BLOCKS << endl;
+    cout << "threads: " << THREADS << endl;
+      
+    convolve2d_helper<<<grid_dim, block_dim>>>(d_image, row_size, col_size, d_kernel, kernel.size(), offset, d_result);
 
     cudaMemcpy(result, d_result, size*sizeof(float), cudaMemcpyDeviceToHost);
 
@@ -101,8 +115,9 @@ vector<vector<float>> convolve2d(vector<vector<float>>& image, vector<vector<flo
 
     for(int i = 0; i < row_size; ++i){
         for(int j = 0; j < col_size; ++j){
+            cout << result[i*col_size + j] << " ";
             out[i][j] = result[i*col_size + j];
-        }
+        } cout << endl;
     }
 
     return out;
