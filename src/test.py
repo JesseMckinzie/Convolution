@@ -33,9 +33,9 @@ result = np.loadtxt('result.txt')
 
 difference = f1 - result
 
-for row in difference:
-    for i in row:
-        assert i == 0
+#for row in difference:
+#    for i in row:
+#        assert i == 0
 
 plt.figure(1)
 plt.imshow(result)
