@@ -7,9 +7,9 @@ from scipy import signal
 from PIL import Image
 
 
-im = imread("checker.jpg")
+im = imread("../img/checker.jpg")
 
-np.savetxt("checkers", im[0])
+np.savetxt("checkers.txt", im[0])
 
 
 K = np.zeros((10,10))
@@ -25,7 +25,7 @@ img = np.zeros((100,100))
 img[0:50, 0:40] = 1.
 img[50:100, 0:60] = 1.
 
-np.savetxt('img', img)
+np.savetxt('img.txt', img)
 
 f1 = signal.convolve2d(img, K,  fillvalue=0)
 

@@ -6,6 +6,6 @@
 
 namespace convolution{
 
-    std::vector<std::vector<float>> convolve2d(std::vector<std::vector<float>>& image, vector<vector<float>>& kernel, int paddingSize=-1);
+    std::vector<std::vector<float>> convolve2d(std::vector<std::vector<float>>& image, std::vector<std::vector<float>>& kernel, int paddingSize=-1);
 
 }

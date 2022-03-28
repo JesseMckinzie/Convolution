@@ -1,3 +1,5 @@
+#include "convolution.cuh"
+
 using namespace std;
 
 __global__ void convolve2d_helper(float* image, int row_size, int col_size, float* kernel, int kernel_size, int kernel_offset, float* result){
@@ -34,7 +36,8 @@ __global__ void convolve2d_helper(float* image, int row_size, int col_size, floa
 }
 
 namespace convolution {
-    vector<vector<float>> convolve2d(vector<vector<float>>& image, vector<vector<float>>& kernel, int paddingSize=-1){
+
+    vector<vector<float>> convolve2d(vector<vector<float>>& image, vector<vector<float>>& kernel, int paddingSize){
         int topPadding, bottomPadding;
         unsigned long long image_size [2] = {image.size(), image[0].size()};
 
@@ -96,8 +99,8 @@ namespace convolution {
 
         int X_THREADS = 16;
         int Y_THREADS = X_THREADS;
-        int X_BLOCKS = (col_size + THREADS - 1) / THREADS;
-        int Y_BLOCKS = (row_size + THREADS - 1) / THREADS;
+        int X_BLOCKS = (col_size + X_THREADS - 1) / X_THREADS;
+        int Y_BLOCKS = (row_size + Y_THREADS - 1) / Y_THREADS;
 
         dim3 block_dim(X_THREADS, Y_THREADS);
         dim3 grid_dim(X_BLOCKS, Y_BLOCKS);

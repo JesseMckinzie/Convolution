@@ -2,9 +2,10 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include "../CUDA/convolution.cu"
+#include "../src/CUDA/convolution.cuh"
 
 using namespace std;
+typedef vector<vector<float>> Matrix;
 
 // start helper methods 
 
@@ -74,7 +75,7 @@ int main(){
         img.push_back(in);
         in.clear();
     }
-    vector<vector<float>> out = convolve2d(img, K);
+    vector<vector<float>> out = convolution::convolve2d(img, K);
 
     write("result.txt", out);
 }
