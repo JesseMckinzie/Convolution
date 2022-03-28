@@ -16,8 +16,12 @@ The kernel is: <br />
  
  The results from scipy
  
- ![scipy](img/scipy.png?raw=true "scipy")
+ ![scipy](img/scipy.png?raw=true "scipy result")
 
 The results from the C++ algorithm:
 
-![result](img/result.png?raw=true "reult")
+![result](img/result.png?raw=true "C++ result")
+
+The results from the CUDA algorithm:
+
+![result](img/CUDA_result.png?raw=true "CUDA reult")

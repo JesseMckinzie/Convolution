@@ -11,7 +11,6 @@ im = imread("../img/checker.jpg")
 
 np.savetxt("checkers.txt", im[0])
 
-
 K = np.zeros((10,10))
 
 K[:,:] = 1
