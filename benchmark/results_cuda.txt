@@ -1,0 +1,178 @@
+-----100----------
+
+time taken to flatten array: 0.0373
+Total time: 1208.06
+
+time taken to flatten array: 0.0359
+Total time: 684.015
+
+time taken to flatten array: 0.0306
+Total time: 672.382
+
+time taken to flatten array: 0.0454
+Total time: 1188.92
+
+time taken to flatten array: 0.0313
+Total time: 665.275
+--- end 100 -----
+
+
+--- 200 ---
+time taken to flatten array: 0.1075
+Total time: 1249.61
+
+time taken to flatten array: 0.1121
+Total time: 695.827
+
+time taken to flatten array: 0.196
+Total time: 672.104
+
+time taken to flatten array: 0.1171
+Total time: 677.551
+
+time taken to flatten array: 0.1891
+Total time: 1191.09
+--- end 200 --
+
+--- 400 ---
+
+Image size: 400 running.
+time taken to flatten array: 0.443
+Total time: 1206.37
+
+time taken to flatten array: 0.4969
+Total time: 1250.92
+
+time taken to flatten array: 0.4095
+Total time: 1211.26
+
+time taken to flatten array: 0.521
+Total time: 680.105
+
+time taken to flatten array: 0.4168
+Total time: 1254.53
+
+---- end 400 --
+
+--- 800 --- 
+
+time taken to flatten array: 1.2068
+Total time: 1211.84
+
+time taken to flatten array: 1.202
+Total time: 1212.9
+
+time taken to flatten array: 1.1476
+Total time: 1205.95
+
+time taken to flatten array: 1.1833
+Total time: 1227.41
+
+time taken to flatten array: 1.2543
+Total time: 692.052
+--- end 800 ---
+
+--- 1600 ---
+
+time taken to flatten array: 4.6059
+Total time: 798.92
+
+time taken to flatten array: 4.6477
+Total time: 740.455
+
+time taken to flatten array: 4.0593
+Total time: 1281.95
+
+time taken to flatten array: 4.936
+Total time: 770.001
+
+time taken to flatten array: 4.3983
+Total time: 1367.06
+
+---- end 1600 ---
+
+--- 3200 ---
+
+time taken to flatten array: 20.6139
+Total time: 1427.17
+
+time taken to flatten array: 18.4433
+Total time: 1406.6
+
+time taken to flatten array: 19.4669
+Total time: 1415.75
+
+time taken to flatten array: 19.7417
+Total time: 1487.08
+
+time taken to flatten array: 18.9932
+Total time: 1451.3
+
+--- end 3200 ---
+
+--- 6400 ---
+time taken to flatten array: 77.7965
+Total time: 1777.5
+
+time taken to flatten array: 69.5947
+Total time: 1751.83
+
+time taken to flatten array: 69.8719
+Total time: 1756.28
+
+time taken to flatten array: 71.6586
+Total time: 1680.85
+
+time taken to flatten array: 74.1019
+Total time: 1731.36
+
+--- end 6400 ---
+
+--- 12800 --- 
+time taken to flatten array: 293.078
+Total time: 3579.91
+
+time taken to flatten array: 275.133
+Total time: 3501.85
+
+time taken to flatten array: 269.534
+Total time: 3481.09
+
+time taken to flatten array: 271.388
+Total time: 3504.22
+
+time taken to flatten array: 272.053
+Total time: 3503.36
+
+--- end 12800 ---
+
+--- 256000 --- 
+PS C:\Users\jesse\OneDrive\Documents\GitHub\Convolution> ./test
+filepath: E:\CUDA_benchmark_data\data\img25600.txt
+Image size: 25600 running.
+time taken to flatten array: 1170.13
+Total time: 8681.09
+
+PS C:\Users\jesse\OneDrive\Documents\GitHub\Convolution> ./test
+filepath: E:\CUDA_benchmark_data\data\img25600.txt
+Image size: 25600 running.
+time taken to flatten array: 1140.64
+Total time: 8440.82
+
+PS C:\Users\jesse\OneDrive\Documents\GitHub\Convolution> ./test
+filepath: E:\CUDA_benchmark_data\data\img25600.txt
+Image size: 25600 running.
+time taken to flatten array: 1110.39
+Total time: 8393.11
+
+PS C:\Users\jesse\OneDrive\Documents\GitHub\Convolution> ./test
+filepath: E:\CUDA_benchmark_data\data\img25600.txt
+Image size: 25600 running.
+time taken to flatten array: 1135.46
+Total time: 8443.48
+
+PS C:\Users\jesse\OneDrive\Documents\GitHub\Convolution> ./test
+filepath: E:\CUDA_benchmark_data\data\img25600.txt
+Image size: 25600 running.
+time taken to flatten array: 1119.45
+Total time: 8394.21

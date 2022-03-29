@@ -41,11 +41,33 @@ namespace convolution {
         int topPadding, bottomPadding;
         unsigned long long image_size [2] = {image.size(), image[0].size()};
 
+        // error checking
+        if(paddingSize < -1) throw invalid_argument("Padding size must be a non negative number.");
+
+        // check if kernel is empty
+        if(kernel.size() == 0 && kernel[0].size() == 0) throw invalid_argument("kernel must be non empty.");
+
+        // check if image is empty
+        if(image.size() == 0 && image[0].size() == 0) throw invalid_argument("image must be non empty.");
+
+        // ensure every row is the same length
+        for(int i = 1; i < image.size(); ++i){
+            if(image[i].size() != image_size[1]) throw invalid_argument("image must be a rectangular matrix.");
+        }
+
+        // ensure every row is the same length
+        int kernel_size = kernel[0].size();
+        for(int i = 1; i < kernel.size(); ++i){
+            if(kernel[i].size() != kernel_size) throw invalid_argument("kernel must be a rectangular matrix.");
+        }
+
+        // end error checking
+
         // calculate padding size
         if(paddingSize == -1) {
 
             topPadding = ceil((kernel.size()-1) / 2.);
-            bottomPadding = floor((kernel.size()-1) / 2.);
+            bottomPadding = floor((kernel[0].size()-1) / 2.);
 
         } else {
             topPadding = paddingSize;
@@ -60,7 +82,9 @@ namespace convolution {
         // allocate space for linear indexed arrays
         float* linear_image = (float*)malloc(size * sizeof(float));
         float* result = (float*)malloc(size * sizeof(float));
-        float* linear_kernel = (float*)malloc(kernel.size()*kernel.size() * sizeof(float));
+        float* linear_kernel = (float*)malloc(kernel.size()*kernel[0].size() * sizeof(float));
+
+        auto linear_start = chrono::high_resolution_clock::now();
 
         int index;
         // create linear indexed image with padding
@@ -79,10 +103,14 @@ namespace convolution {
 
         // create linear indexed filter
         for (int i = 0; i < kernel.size(); ++i) {
-            for (int j = 0; j < kernel.size(); ++j) {
+            for (int j = 0; j < kernel[0].size(); ++j) {
                 linear_kernel[i*kernel.size() + j] = kernel[i][j];
             }
         }
+
+        auto linear_end = chrono::high_resolution_clock::now();
+        chrono::duration<double, std::milli> linear_ms = linear_end - linear_start;
+        cout << "time taken to flatten array: " << linear_ms.count() << endl;
 
         float* d_image;
         float* d_result;
@@ -109,10 +137,11 @@ namespace convolution {
         
         // call kernel
         convolve2d_helper<<<grid_dim, block_dim>>>(d_image, row_size, col_size, d_kernel, kernel.size(), offset, d_result);
+        cudaDeviceSynchronize();
 
         // copy results from device to host
         cudaMemcpy(result, d_result, size*sizeof(float), cudaMemcpyDeviceToHost);
-
+        
         // initialize return vector
         vector<vector<float>> out( row_size , vector<float> (col_size, 0));
         

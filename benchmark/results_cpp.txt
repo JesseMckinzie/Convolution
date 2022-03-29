@@ -1,0 +1,110 @@
+---100---
+
+Total time: 3.3789
+
+Total time: 3.4761      
+
+Total time: 3.8909
+
+Total time: 3.3969
+
+Total time: 3.4895
+------
+---200--
+
+Total time: 12.622
+
+Total time: 12.8603
+
+Total time: 13.4159     
+
+Total time: 12.4145
+
+Total time: 13.3745
+--------
+---400---
+
+Total time: 47.7757
+
+Total time: 47.7139
+
+Total time: 49.7167
+
+Total time: 47.8484
+
+Total time: 47.7526
+
+-------
+---800--
+
+Total time: 186.146
+
+Total time: 186.423
+
+Total time: 186.613
+
+Total time: 188.819
+
+Total time: 186.775
+
+-------
+
+
+--- 1600 --
+
+Total time: 726.6
+
+Total time: 727.088
+
+Total time: 723.393
+
+Total time: 722.686
+
+Total time: 725.681
+
+-------
+
+---3200 ---
+
+Total time: 2882.08
+
+Total time: 2983.7
+
+Total time: 2880.64
+
+Total time: 2875.7
+
+Total time: 2862.89
+
+------
+
+---6400 ---
+
+Total time: 11470.9
+
+Total time: 11735.9
+
+Total time: 11494.8
+
+Total time: 11586.5
+
+Total time: 11425.7
+------
+
+
+--- 12800 ----
+
+Total time: 48253.5
+
+Total time: 48192.3
+
+Total time: 48656.1
+
+--- end 12800--0
+--- 256000 ---
+
+Total time: 186653
+
+Total time: 187261
+
+Total time: 186880
