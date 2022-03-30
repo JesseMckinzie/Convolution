@@ -136,8 +136,12 @@ namespace convolution {
         int offset = kernel.size() / 2.; // center of filter
         
         // call kernel
+        auto start = chrono::high_resolution_clock::now();
         convolve2d_helper<<<grid_dim, block_dim>>>(d_image, row_size, col_size, d_kernel, kernel.size(), offset, d_result);
         cudaDeviceSynchronize();
+        auto end = chrono::high_resolution_clock::now();
+        chrono::duration<double, std::milli> time  = end - start;
+        cout << "time in kernel: " << time.count() << endl;
 
         // copy results from device to host
         cudaMemcpy(result, d_result, size*sizeof(float), cudaMemcpyDeviceToHost);

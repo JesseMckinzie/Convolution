@@ -55,7 +55,7 @@ int main(){
     string path = "E:\\CUDA_benchmark_data\\data\\";
 
     //vector<int16 image_sizes {200, 400, 800, 1600, 3200, 6400, 12800, 25600};
-    int size = 100;
+    int size = 25600;
 
     vector<float> in;
     vector<string> vec;
@@ -104,16 +104,16 @@ int main(){
         img.push_back(in);
         in.clear();
     }
-    cout << "Image size: " << std::to_string(size) << " running." << endl;
+    cout << "Image is size: " << std::to_string(size) << " running." << endl;
     auto start = std::chrono::high_resolution_clock::now();
-    //vector<vector<float>> out = convolution::convolve2d(img, K);
-    Matrix out = Convolution::convolution2d(img, K);
+    vector<vector<float>> out = convolution::convolve2d(img, K);
+    //Matrix out = Convolution::convolution2d(img, K);
     auto end = std::chrono::high_resolution_clock::now();
     chrono::duration<double, std::milli> ms = end - start;
     cout << "Total time: " << ms.count() << endl;
     cout << endl;
     //img.clear();
 
-    //write("result.txt", out);
+    write("test_result.txt", out);
     
 }
