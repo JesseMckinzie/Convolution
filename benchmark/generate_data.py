@@ -1,6 +1,9 @@
 import numpy as np
 from random import randrange
 
+
+path = '../data/'
+
 def get_random_matrix(image_size, max_pixel_value):
     image = np.zeros((image_size, image_size))
 
@@ -11,7 +14,7 @@ def get_random_matrix(image_size, max_pixel_value):
     return image
     
 
-def get_four_kernels(start_size, image_size):
+def get_four_kernels(start_size, image_size, path=''):
     end_size = image_size//4
     step_size = (end_size - start_size) // 3
     sizes = np.arange(start_size, end_size+1, step_size).tolist()
@@ -24,14 +27,13 @@ def get_four_kernels(start_size, image_size):
     for size in sizes:
         kernel = get_random_matrix(size, 255)
         name = 'K' + str(size) + '_' + str(image_size) + '.txt'
-        np.savetxt(name, kernel)
+        np.savetxt(path + name, kernel)
 
 
 smallest = 256
 largest = 5000
 
 image_sizes = []
-
 
 size = smallest
 image_sizes.append(size)
@@ -43,8 +45,8 @@ while(size <= largest):
 for image_size in image_sizes:
     image = get_random_matrix(image_size, 255)
     image_name = 'img' + str(image_size) + '.txt'
-    np.savetxt(image_name, image)
-    get_four_kernels(32, image_size)
+    np.savetxt(path + image_name, image)
+    get_four_kernels(32, image_size, path)
 
 
 

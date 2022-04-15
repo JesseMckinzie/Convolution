@@ -56,7 +56,15 @@ void write(const string& name, vector<vector<float>>& vec){
 
 // end helper methods
 
+<<<<<<< Updated upstream
 tuple<double, double> run_benchmark(int size, int kernel_size, string& image_path, string& kernel_path){
+=======
+int main(){
+    string path = "/home/ec2-user/Dev/Convolution/Convolution/data";
+
+    //vector<int16 image_sizes {200, 400, 800, 1600, 3200, 6400, 12800, 25600};
+    int size = 25600;
+>>>>>>> Stashed changes
 
     vector<float> in;
     vector<string> vec;
@@ -109,12 +117,7 @@ tuple<double, double> run_benchmark(int size, int kernel_size, string& image_pat
     cout << "Kernel is size: " << std::to_string(kernel_size) << endl;
 
     auto start = std::chrono::high_resolution_clock::now();
-<<<<<<< HEAD
-    vector<vector<float>> out = convolution::tile_convolve2d(img, K);
-    //Matrix out = Convolution::convolution2d(img, K);
-=======
     vector<vector<float>> out = convolution::convolve2d(img, K);
->>>>>>> c0f373a30ba51531f8200148d5561cac31718420
     auto end = std::chrono::high_resolution_clock::now();
     chrono::duration<double, std::milli> cuda_ms = end - start;
     cout << "cuda time: " << cuda_ms.count() << endl;
