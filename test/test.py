@@ -6,8 +6,7 @@ import seaborn as sns; sns.set()
 from scipy import signal
 from PIL import Image
 
-
-im = imread("../img/checker.jpg")
+im = imread("/home/ec2-user/Dev/Convolution/Convolution/img/checker.jpg")
 
 np.savetxt("checkers.txt", im[0])
 
@@ -28,23 +27,26 @@ np.savetxt('img.txt', img)
 
 f1 = signal.convolve2d(img, K,  fillvalue=0)
 
-result = np.loadtxt('result.txt')
+result = np.loadtxt('result_opt.txt')
 
 difference = f1 - result
 
-for row in difference:
-    for i in row:
-        assert i == 0
+#for row in difference:
+#    for i in row:
+#        assert i == 0
 
 plt.figure(1)
 plt.imshow(result)
 plt.colorbar()
+plt.savefig('1.png')
 
 plt.figure(2)
 plt.imshow(f1)
 plt.colorbar()
+plt.savefig('2.png')
 
 plt.figure(3)
 plt.imshow(difference)
 plt.colorbar()
+plt.savefig('3.png')
 plt.show()

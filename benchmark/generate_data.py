@@ -70,7 +70,7 @@ for i in range(1, number_of_points+1):
     K[:,0:kernel_size//2] = -1.
 
     name ="K{}".format(kernel_size)
-    np.savetxt(name, K)
+    np.savetxt(path + name, K)
 
     kernel_size *= increment
 
@@ -82,7 +82,7 @@ for i in range(1, number_of_points+1):
             image[i][j] = randrange(max_pixel_value+1)
 
     name ="img{}".format(image_size)
-    np.savetxt(name, image)
+    np.savetxt(path + name, image)
 
     image_size *= increment
 """

@@ -106,7 +106,7 @@ int main(){
     }
     cout << "Image is size: " << std::to_string(size) << " running." << endl;
     auto start = std::chrono::high_resolution_clock::now();
-    vector<vector<float>> out = convolution::convolve2d(img, K);
+    vector<vector<float>> out = convolution::tile_convolve2d(img, K);
     //Matrix out = Convolution::convolution2d(img, K);
     auto end = std::chrono::high_resolution_clock::now();
     chrono::duration<double, std::milli> ms = end - start;

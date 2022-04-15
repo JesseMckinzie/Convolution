@@ -75,7 +75,34 @@ int main(){
         img.push_back(in);
         in.clear();
     }
-    vector<vector<float>> out = convolution::convolve2d(img, K);
 
-    write("result.txt", out);
+    cout << "image" << endl;
+    for(const auto vec:img){
+        for(const auto v:vec){
+            cout << v << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+    cout << "kernel" << endl;
+    for(const auto vec: K){
+        for( const auto v:vec){
+            cout << v << " ";
+        }
+        cout << endl;
+    }
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    vector<vector<float>> out1 = convolution::convolve2d(img, K);
+
+    vector<vector<float>> out2 = convolution::tile_convolve2d(img, K);
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    chrono::duration<double, std::milli> ms = end - start;
+    cout << "Total time: " << ms.count() << endl;
+
+    write("result_act.txt", out1);
+    write("result_opt.txt", out2);
 }
