@@ -1,6 +1,6 @@
 #include "convolution.cuh"
 
-#define block_size 32
+#define BLOCK_SIZE 32 // sqrt of max number of threads per block
 using namespace std;
 
 __global__ void convolve2d_helper(float* image, int row_size, int col_size, float* kernel, int kernel_size, int kernel_offset, float* result){
@@ -43,18 +43,15 @@ __global__ void convolve2d_helper_opt(float* image, int row_size, int col_size, 
     int row = blockIdx.y * tile_width + threadIdx.y;
     int col = blockIdx.x * tile_width + threadIdx.x;
 
-    // check bounds
-    //if(row >= row_size || col >= col_size) return;
-
     int m_row = row - kernel_offset;
     int m_col = col - kernel_offset;
 
-    __shared__ float tile[block_size][block_size];
+    __shared__ float tile[BLOCK_SIZE * BLOCK_SIZE];
 
     if (m_row >= 0 && m_row < row_size && m_col >=0 && m_col < col_size) {
-        tile[threadIdx.y][threadIdx.x] = image[m_row * col_size + m_col];
+        tile[threadIdx.y * BLOCK_SIZE + threadIdx.x] = image[m_row * col_size + m_col];
     } else {
-        tile[threadIdx.y][threadIdx.x] = 0;
+        tile[threadIdx.y * BLOCK_SIZE + threadIdx.x] = 0;
     }
 
     __syncthreads();
@@ -64,7 +61,7 @@ __global__ void convolve2d_helper_opt(float* image, int row_size, int col_size, 
 
         for (int i = 0; i < kernel_size; ++i) {
             for (int j = 0; j < kernel_size; ++j) {
-                temp += kernel[i * kernel_size + j] * tile[threadIdx.y + i][threadIdx.x + j];
+                temp += kernel[i * kernel_size + j] * tile[(threadIdx.y + i) * BLOCK_SIZE + (threadIdx.x + j)];
             }
         }
 
@@ -166,10 +163,10 @@ namespace convolution {
         cudaMemcpy(d_kernel, linear_kernel, kernel.size()*kernel.size()*sizeof(float), cudaMemcpyHostToDevice);
 
 
-        int tile_width = block_size - (kernel.size() -1);
+        int tile_width = BLOCK_SIZE - (kernel.size() -1);
         
         dim3 num_blocks(ceil(col_size / (float) tile_width), ceil(row_size / (float) tile_width), 1);
-        dim3 num_threads(block_size, block_size, 1);
+        dim3 num_threads(BLOCK_SIZE, BLOCK_SIZE, 1);
 
         printf("Grid : {%d, %d, %d} blocks. Blocks : {%d, %d, %d} threads.\n",
         num_blocks.x, num_blocks.y, num_blocks.z, num_threads.x, num_threads.y, num_threads.z);
