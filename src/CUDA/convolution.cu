@@ -1,6 +1,6 @@
 #include "convolution.cuh"
 
-#define BLOCK_SIZE 32 // sqrt of max number of threads per block
+#define BLOCK_SIZE 32 // BLOCK_SIZE*BLOCK_SIZE = max number of threads per block
 using namespace std;
 
 __global__ void convolve2d_helper(float* image, int row_size, int col_size, float* kernel, int kernel_size, int kernel_offset, float* result){
