@@ -51,8 +51,6 @@ __global__ void convolve2d_helper_opt(float* image, int row_size, int col_size, 
 
     __shared__ float tile[block_size][block_size];
 
-    //const int global_loc = threadIdx.x + blockIdx.x * blockDim.x + threadIdx.y * dataW + blockIdx.y * blockDim.y * dataW;
-
     if (m_row >= 0 && m_row < row_size && m_col >=0 && m_col < col_size) {
         tile[threadIdx.y][threadIdx.x] = image[m_row * col_size + m_col];
     } else {
@@ -62,107 +60,16 @@ __global__ void convolve2d_helper_opt(float* image, int row_size, int col_size, 
     __syncthreads();
 
     float temp = 0;
-    int ii, jj;
-    if(threadIdx.y < tile_width && threadIdx.x < tile_width && row < row_size  && col < col_size)
-    {
+    if (threadIdx.y < tile_width && threadIdx.x < tile_width && row < row_size  && col < col_size) {
 
-        // calculate value of result element
-        for(int i = 0; i < kernel_size; ++i)
-        {
-            for(int j = 0; j < kernel_size; ++j)
-            {
-                //ii = threadIdx.y + (kernel_offset - i);
-                //jj = threadIdx.x + (kernel_offset - j);
-                //if(ii>=0 && jj>=0){
+        for (int i = 0; i < kernel_size; ++i) {
+            for (int j = 0; j < kernel_size; ++j) {
                 temp += kernel[i * kernel_size + j] * tile[threadIdx.y + i][threadIdx.x + j];
-               // }
-            }
-        }
-
-        // write result variable to corresponding element of result array
-        result[row * col_size + col] = temp;
-    }
-
-    /*
-    int iFlip, jFlip; // flipped kernel indices
-    int ii, jj;
-    float temp = 0;
-
-    if (threadIdx.y < tile_width && threadIdx.x < tile_width && row < row_size && col < col_size) {
-        for(int i = 0; i < kernel_size; ++i){
-
-            iFlip = kernel_size - 1 - i;
-
-            for(int j = 0; j < kernel_size; ++j){
-
-                jFlip = kernel_size - 1 - j;
-
-                ii = threadIdx.x + (kernel_offset - iFlip);
-                jj = threadIdx.y + (kernel_offset - jFlip);
-
-                if(ii >= 0 jj >= 0) {
-                    //temp += tile[ii * col_size + jj] * kernel[iFlip * kernel_size + jFlip];
-                    temp += tile[threadIdx.x + (kernel_offset - iFlip)][threadIdx.y + (kernel_offset - jFlip)] * kernel[iFlip * kernel_size + jFlip];
-                }
-            }
-        }
-
-    result[row * col_size + col] = temp;
-    }
-    */
-
-    
-    /*
-    // calculate row and column positions
-    int row = blockIdx.x * tile_width + threadIdx.x;
-    int col = blockIdx.y * tile_width + threadIdx.y;
-
-    // check bounds
-    //if(row >= row_size || col >= col_size) return;
-
-    int m_row = row - kernel_offset;
-    int m_col = col - kernel_offset;
-
-
-    __shared__ float tile[block_size][block_size];
-
-    //const int global_loc = threadIdx.x + blockIdx.x * blockDim.x + threadIdx.y * dataW + blockIdx.y * blockDim.y * dataW;
-
-    if (m_row >= 0 && m_row < row_size && m_col >=0 && m_col < col_size) {
-        tile[threadIdx.x][threadIdx.y] = image[m_row * col_size + m_col];
-    } else {
-        tile[threadIdx.x][threadIdx.y] = 0;
-    }
-
-    __syncthreads();
-    
-    int iFlip, jFlip; // flipped kernel indices
-    int ii, jj;
-    float temp = 0;
-
-    if (threadIdx.y < tile_width && threadIdx.x < tile_width && row < row_size && col < col_size) {
-        for(int i = 0; i < kernel_size; ++i){
-
-            iFlip = kernel_size - 1 - i;
-
-            for(int j = 0; j < kernel_size; ++j){
-
-                jFlip = kernel_size - 1 - j;
-
-                ii = threadIdx.x + (kernel_offset - iFlip);
-                jj = threadIdx.y + (kernel_offset - jFlip);
-
-                if(ii >= 0 && ii < row_size && jj >= 0 && jj < col_size) {
-                    //temp += tile[ii * col_size + jj] * kernel[iFlip * kernel_size + jFlip];
-                    temp += tile[threadIdx.x + (kernel_offset - iFlip)][threadIdx.y + (kernel_offset - jFlip)] * kernel[iFlip * kernel_size + jFlip];
-                }
             }
         }
 
         result[row * col_size + col] = temp;
     }
-    */
-
 }
 
 
@@ -218,22 +125,6 @@ namespace convolution {
 
         auto linear_start = chrono::high_resolution_clock::now();
 
-        /*
-        int index;
-        // create linear indexed image with padding
-        for (int i = 0; i < row_size; ++i) {
-            for (int j = 0; j < col_size; ++j) {
-                index = i*col_size + j;
-                if (j < topPadding || j >= topPadding + image_size[1]) {
-                    linear_image[index] = 0;
-                } else if (i < topPadding || i >= topPadding + image_size[0]) {
-                    linear_image[index] = 0;
-                } else {
-                    linear_image[index] = image[i-topPadding][j-topPadding];
-                }
-            }
-        }
-        */
         int index;
         // create linear indexed image with padding
         for (int i = 0; i < row_size; ++i) {
@@ -252,9 +143,8 @@ namespace convolution {
         // create linear indexed filter
         for (int i = 0; i < kernel.size(); ++i) {
             for (int j = 0; j < kernel[0].size(); ++j) {
-                cout << i*kernel.size() + j << " ";
                 linear_kernel[i*kernel.size() + j] = kernel[kernel.size() - 1 - i][kernel.size() - 1 - j];
-            } cout << endl;
+            }
         }
 
         auto linear_end = chrono::high_resolution_clock::now();
